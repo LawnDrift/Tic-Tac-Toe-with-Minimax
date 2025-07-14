@@ -5,6 +5,7 @@ const originalBoard = [
 ];
 const playerPreference = JSON.parse(localStorage.getItem("playerPreference")) || {};
 const preferredDifficulty = localStorage.getItem("difficulty");
+const AIDelay = 400;
 let board = structuredClone(originalBoard);
 
 let human = playerPreference?.human || "X";
@@ -58,8 +59,11 @@ updateDifficultyStateText();
 
 //ai starts game
 if (currentPlayer == ai) {
-  bestMove();
-  updateBoard();
+  setTimeout(() => {
+    bestMove();
+    updateBoard();
+  }, AIDelay);
+
 }
 
 xBtn.addEventListener("click", ()=> {
@@ -84,9 +88,11 @@ cells.forEach((cell) => {
     if (cell.hasChildNodes() || checkWinner() !== null) {
       return;
     }
-    cell.innerHTML = currentPlayer == "X" ? xELementStringHover : oElementStringHover;
+
+    cell.innerHTML = human == "X" ? xELementStringHover : oElementStringHover;
 
   });
+
   cell.addEventListener('mouseleave', () => {
     if (checkWinner() !== null) {
       return
@@ -113,10 +119,14 @@ cells.forEach((cell) => {
       } 
       else {
         currentPlayer = ai;
-        bestMove();
-        if (checkWinner() == ai) computerScore += 1;
-        updateScores();
-        
+        setTimeout(() => {
+          bestMove();
+          if (checkWinner() == ai) computerScore += 1;
+          updateScores();
+          updateBoard();
+          showWinner();
+        }, AIDelay);
+      
       }
       updateBoard();
       showWinner();
