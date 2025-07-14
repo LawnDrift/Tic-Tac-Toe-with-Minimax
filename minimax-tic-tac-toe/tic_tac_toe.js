@@ -122,12 +122,15 @@ cells.forEach((cell) => {
         setTimeout(() => {
           bestMove();
           if (checkWinner() == ai) computerScore += 1;
+          if (checkWinner() == "tie") drawScore += 1;
+          if (checkWinner() == human) playerScore += 1;
           updateScores();
           updateBoard();
           showWinner();
         }, AIDelay);
       
       }
+
       updateBoard();
       showWinner();
     }
@@ -251,8 +254,8 @@ function bestMove() {
 
   let bestScore = -Infinity;
   let bestMoves = [];
-  const maxDepth = difficulty === "medium" 
-  ? 2 : Infinity; //maxDepth of 2 means that the ai only looks 2 steps ahead.
+  const maxDepth = difficulty == "medium" 
+  ? 1 : Infinity; //maxDepth of 1 means that the ai only looks 1 steps ahead.
   
   for (let i = 0; i < 3; i++) {
     for (let j = 0; j < 3; j++) {
@@ -389,7 +392,9 @@ function resetGame() {
   });
   currentPlayer = human == "X" ? human : ai;
   if (currentPlayer == ai) {
-    bestMove();
-    updateBoard();
+    setTimeout(() => {
+      bestMove();
+      updateBoard();
+    }, AIDelay);
   }
 }
