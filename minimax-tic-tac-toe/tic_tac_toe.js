@@ -3,12 +3,14 @@ const originalBoard = [
   [" ", " ", " "],
   [" ", " ", " "]
 ];
-
+const playerPreference = JSON.parse(localStorage.getItem("playerPreference")) || {};
+const preferredDifficulty = localStorage.getItem("difficulty");
 let board = structuredClone(originalBoard);
-let human = "X";
-let ai = "O";
-let currentPlayer = human;
-let difficulty = "medium";
+
+let human = playerPreference?.human || "X";
+let ai = playerPreference?.ai || "O";
+let currentPlayer = human == "X" ? human : ai;
+let difficulty = preferredDifficulty || "medium";
 
 let playerScore = 0;
 let computerScore = 0;
@@ -49,6 +51,32 @@ const drawStatText = document.getElementById("draw-stat");
 const playerStatText = document.getElementById("player-stat");
 const winnerPanel = document.querySelector(".winner-panel");
 const xOContainer = document.querySelector(".x-o-container");
+const xBtn = document.getElementById("x-btn");
+const oBtn = document.getElementById("o-btn");
+
+updateDifficultyStateText();
+
+//ai starts game
+if (currentPlayer == ai) {
+  bestMove();
+  updateBoard();
+}
+
+xBtn.addEventListener("click", ()=> {
+  human = "X";
+  ai = "O";
+  resetGame();
+  localStorage.setItem("playerPreference", 
+    JSON.stringify({human: "X", ai: "O"}));
+});
+
+oBtn.addEventListener("click", ()=> {
+  human = "O";
+  ai = "X";
+  resetGame();
+  localStorage.setItem("playerPreference", 
+    JSON.stringify({human: "O", ai: "X"}));
+});
 
 cells.forEach((cell) => {
   //hover effect when mouse enters and leaves
@@ -98,8 +126,9 @@ cells.forEach((cell) => {
 });
 
 easyBtn.addEventListener("click", () => {
+  localStorage.setItem("difficulty", "easy");
   difficulty = "easy";
-  difficultyStateText.innerText = `Current Difficulty: Easy`;
+  updateDifficultyStateText();
   resetGame();
   playerScore = 0;
   computerScore = 0;
@@ -108,8 +137,9 @@ easyBtn.addEventListener("click", () => {
 });
 
 mediumBtn.addEventListener("click", () => {
+  localStorage.setItem("difficulty", "medium");
   difficulty = "medium";
-  difficultyStateText.innerText = `Current Difficulty: Medium`;
+  updateDifficultyStateText();
   resetGame();
   playerScore = 0;
   computerScore = 0;
@@ -118,8 +148,9 @@ mediumBtn.addEventListener("click", () => {
 });
 
 ImpossibleBtn.addEventListener("click", () => {
+  localStorage.setItem("difficulty", "impossible");
   difficulty = "impossible";
-  difficultyStateText.innerText = `Current Difficulty: Impossible`;
+  updateDifficultyStateText();
   resetGame();
   playerScore = 0;
   computerScore = 0;
@@ -178,6 +209,12 @@ function updateScores() {
 
 }
 
+function updateDifficultyStateText() {
+  if (difficulty == "easy") difficultyStateText.innerText = `Current Difficulty: Easy`;
+  if (difficulty == "medium") difficultyStateText.innerText = `Current Difficulty: Medium`;
+  if (difficulty == "impossible") difficultyStateText.innerText = `Current Difficulty: Impossible`;
+
+}
 
 
 function bestMove() {
@@ -340,6 +377,9 @@ function resetGame() {
     cell.innerHTML = "";
     cell.classList.remove("active");
   });
-  currentPlayer = human;
-
+  currentPlayer = human == "X" ? human : ai;
+  if (currentPlayer == ai) {
+    bestMove();
+    updateBoard();
+  }
 }
