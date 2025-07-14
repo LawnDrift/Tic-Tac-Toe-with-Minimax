@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tic Tac Toe</title>
+  <link rel="stylesheet" href="tic_tac_toe.css">
+</head>
+<body>
+  <nav id="navbar">
+    <section class="gamemodes-section">
+      <h2 class="gamemodes-title">Game Modes</h2>
+      <button id="ai-btn">Play Against AI</button>
+    </section>
+    <section class="difficulty-section">
+      <h2 class="difficulty-title">Difficulty</h2>
+      <p id="difficulty-state">Current Difficulty: Medium</p>
+      <button id="easy-btn">Easy</button>
+      <button id="medium-btn">Medium</button>
+      <button id="impossible-btn">Impossible</button>
+    </section>
+    <section class="which-player-section">
+      <h2>Choose your Side: X or O</h2>
+      <button id="x-btn">X</button>
+      <button id="o-btn">O</button>
+    </section>
+    
+  </nav>
+  <main>
+    <h1>Tic Tac Toe</h1>
+    <div class="board">
+      <div class="cell" id="cell-0-0"></div>
+      <div class="cell" id="cell-0-1"></div>
+      <div class="cell" id="cell-0-2"></div>
+      <div class="cell" id="cell-1-0"></div>
+      <div class="cell" id="cell-1-1"></div>
+      <div class="cell" id="cell-1-2"></div>
+      <div class="cell" id="cell-2-0"></div>
+      <div class="cell" id="cell-2-1"></div>
+      <div class="cell" id="cell-2-2"></div>
+    </div>
+
+    <div class="stats-container">
+      <div class="stat">
+        <span>Computer</span>
+        <span id="computer-stat">0</span>
+      </div>
+      <div class="stat">
+        <span>Draw</span>
+        <span id="draw-stat">0</span>
+      </div>
+      <div class="stat">
+        <span>Player</span>
+        <span id="player-stat">0</span>
+      </div>
+    </div>
+    <div class="winner-panel">
+      
+      <div class="x-o-container">
+        <div class="x">
+          <div class="diagonal-1"></div>
+          <div class="diagonal-2"></div>
+        </div>
+      </div>
+      <h1 id="winner-h1">Winner!</h1>
+      <button id="play-again">Play Again</button>
+    </div>
+  </main>
+  <script src="tic_tac_toe.js"></script>
+</body>
+</html>
